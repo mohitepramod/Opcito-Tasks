@@ -15,6 +15,7 @@ parser.add_argument("--InstanceType")
 parser.add_argument("--KeyName")
 parser.add_argument("--SubnetId")
 parser.add_argument("--VolumeSize")
+parser.add_argument("--Tags")
 
 args = parser.parse_args()
 
@@ -26,6 +27,7 @@ InstanceType = args.InstanceType
 KeyName = args.KeyName
 SubnetId = args.SubnetId
 VolumeSize = args.VolumeSize
+Tag = args.Tags
 
 
 ec2 = boto3.resource('ec2')
@@ -53,7 +55,16 @@ class LaunchEC2InstanceClass(object):
                                                     "VolumeType": "io1"
                                                 }
                                             },
-                                        ]
+                                        ],
+                                        tag=client.create_tags(
+                                            DryRun= False,
+                                            Tags=[
+                                                {
+                                                    'Key': 'Name',
+                                                    'Value': 'Test-Instance-PM'
+                                                },
+                                            ]
+                                        )
                                         )
 
 
